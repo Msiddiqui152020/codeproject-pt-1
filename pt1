@@ -1,0 +1,99 @@
+import java.util.Scanner;
+import java.util.HashMap;
+
+public class RestaurantBilling {
+    public static void main(String [] args) {
+
+HashMap<String, Double> menu = new HashMap<>();
+Scanner scanner = new Scanner(System.in);
+boolean isRunning = true;
+
+while (isRunning) {
+    System.out.println("What would you like to do?");
+    System.out.println("1: Calculate total");
+    System.out.println("2: Add an item to the menu");
+    System.out.println("3: Delete an item from the menu");
+    System.out.println("4: Change the price of an item");
+    System.out.println("5: Exit");
+    System.out.print("Enter your choice: ");
+    int choice = scanner.nextInt();
+    scanner.nextLine(); // Consume newline
+
+    switch (choice) {
+        case 1:
+            // Calculate total
+            calculateTotal(menu, scanner);
+            break;
+        case 2:
+            // Add item
+            addItem(menu, scanner);
+            break;
+        case 3:
+            // Delete item
+            deleteItem(menu, scanner);
+            break;
+        case 4:
+            // Change price
+            changePrice(menu, scanner);
+            break;
+        case 5:
+            // Exit
+            isRunning = false;
+            System.out.println("Exiting...");
+            break;
+        default:
+            System.out.println("Invalid choice. Please try again.");
+    }
+}
+
+static void addItem(HashMap<String, Double> menu, Scanner scanner) {
+    System.out.print("Enter item name: ");
+    String name = scanner.nextLine();
+    System.out.print("Enter price: ");
+    double price = scanner.nextDouble();
+    scanner.nextLine(); // Consume newline
+    menu.put(name, price);
+    System.out.println("Item added successfully!");
+}
+
+private static void deleteItem(HashMap<String, Double> menu, Scanner scanner) {
+    System.out.print("Enter item name to delete: ");
+    String name = scanner.nextLine();
+    if (menu.containsKey(name)) {
+        menu.remove(name);
+        System.out.println("Item deleted successfully!");
+    } else {
+        System.out.println("Item not found!");
+    }
+}
+
+private static void changePrice(HashMap<String, Double> menu, Scanner scanner) {
+    System.out.print("Enter item name: ");
+    String name = scanner.nextLine();
+    if (menu.containsKey(name)) {
+        System.out.print("Enter new price: ");
+        double price = scanner.nextDouble();
+        scanner.nextLine(); // Consume newline
+        menu.put(name, price);
+        System.out.println("Price updated successfully!");
+    } else {
+        System.out.println("Item not found!");
+    }
+}
+
+private static void calculateTotal(HashMap<String, Double> menu, Scanner scanner) {
+    double total = 0;
+    String input = "";
+    System.out.println("Available items: " + menu.keySet());
+    System.out.println("Enter items ordered (type 'done' to finish):");
+
+    while (!(input = scanner.nextLine()).equals("done")) {
+        if (menu.containsKey(input)) {
+            total += menu.get(input);
+        } else {
+            System.out.println("Item not found, please try again.");
+        }
+    }
+
+    System.out.printf("Total amount: %.2f\n", total);
+}
